@@ -38,6 +38,10 @@ function verifyJWT(req, res, next) {
 
 async function run() {
   try {
+   await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+
     const appointmentOptionCollection = client
       .db("doctorPortal")
       .collection("appointmentOptions");
@@ -57,6 +61,12 @@ async function run() {
 
       next();
     }
+
+    app.get('/allappointment', async(req, res)=>{
+      const result = await appointmentOptionCollection.find().toArray();
+      res.send(result)
+      
+    })
 
     app.get("/appointmentOptions", async (req, res) => {
       const date = req.query.date;
@@ -141,12 +151,12 @@ async function run() {
     //   res.send(result);
     // })
 
-    app.get("/bookings", verifyJWT, async (req, res) => {
+    app.get("/bookings", async (req, res) => {
       const email = req.query.email;
       const decodedEmail = req.decoded.email;
-      if (email !== decodedEmail) {
-        return res.status(403).send({ message: "Forbidden Access" });
-      }
+      // if (email !== decodedEmail) {
+      //   return res.status(403).send({ message: "Forbidden Access" });
+      // }
       const query = { email: email };
       const bookings = await bookingCollection.find(query).toArray();
       res.send(bookings);

@@ -1,4 +1,9 @@
 {
+
+    "rewrites": [
+       { "source": "/(.*)", "destination": "/"}
+    ],
+
     "version": 2,
     "builds": [
         {
@@ -10,7 +15,7 @@
         {
             "src": "/(.*)",
             "dest": "/",
-            "method": ["GET", "PUT", "DELETE", "POST"]
+            "methods": ["GET", "PUT", "DELETE", "POST"]
         }
     ]
 }
