@@ -5,6 +5,15 @@ const port = process.env.PORT || 5000;
 const jwt = require("jsonwebtoken");
 const app = express();
 require("dotenv").config();
+
+app.use(cors({
+  origin: [
+      // 'http://localhost:5173',
+      "https://doctor-portal-server-q7s9eil3c-mahim13s-projects.vercel.app/allappointment"
+  ],
+  credentials: true
+}));
+
 app.use(cors());
 app.use(express.json());
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
@@ -19,6 +28,11 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
+const logger = (req, res, next) =>{
+  console.log('log: info', req.method, req.url);
+  next();
+}
 
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -39,12 +53,9 @@ function verifyJWT(req, res, next) {
 async function run() {
   try {
 
+    // await client.connect();
 
-     client.connect();
-   await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-
-
+    await client.db("admin").command({ ping: 1 });
 
     const appointmentOptionCollection = client
       .db("doctorPortal")
