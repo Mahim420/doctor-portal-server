@@ -6,13 +6,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 require("dotenv").config();
 
-app.use(cors({
-  origin: [
-      // 'http://localhost:5173',
-      "https://doctor-portal-server-q7s9eil3c-mahim13s-projects.vercel.app/allappointment"
-  ],
-  credentials: true
-}));
+
 
 app.use(cors());
 app.use(express.json());
@@ -28,11 +22,6 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
-const logger = (req, res, next) =>{
-  console.log('log: info', req.method, req.url);
-  next();
-}
 
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -77,7 +66,7 @@ async function run() {
       next();
     }
 
-    app.get('/allappointment', async(req, res)=>{
+    app.get('/mahim', async(req, res)=>{
       const result = await appointmentOptionCollection.find().toArray();
       res.send(result)
       
