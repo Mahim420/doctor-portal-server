@@ -8,8 +8,12 @@ require("dotenv").config();
 
 
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://doctors-auth-f0afc.web.app/']
+}));
 app.use(express.json());
+
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4k6eqxi.mongodb.net/?retryWrites=true&w=majority`;
